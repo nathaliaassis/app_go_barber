@@ -31,6 +31,7 @@ const Input: React.RefForwardingComponent<InputInterface, InputProps> = (
   const { registerField, defaultValue = '', fieldName, error } = useField(name);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
 
+  //this hooks pass info from son component to father component
   useImperativeHandle(ref, () => ({
     focus() {
       inputElementRef.current.focus();
