@@ -69,7 +69,7 @@ const Input: React.RefForwardingComponent<InputInterface, InputProps> = (
   }, [fieldName, registerField]);
 
   return (
-    <Container isFocused={isFocused}>
+    <Container isFocused={isFocused} hasError={!!error} isFilled={isFilled}>
       <Icon
         name={icon}
         size={20}

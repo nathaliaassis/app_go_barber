@@ -6,8 +6,10 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import * as Yup from 'yup';
 
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
@@ -26,14 +28,50 @@ import {
   CreateAccountButton,
   CreateAccountText,
 } from './styles';
+import getValidationErrors from '../../utils/getValidationErrors';
+
+interface SignInData {
+  email: string;
+  password: string;
+}
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const handleSignIn = useCallback((data: object) => {
-    console.log(data);
+  const handleSignIn = useCallback(async (data: SignInData) => {
+    try {
+      formRef.current?.setErrors({});
+
+      //quando eu quero validar um objeto inteiro eu crio um schema de validação
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required('E-mail obrigatório')
+          .email('Digite um e-mail válido'),
+        password: Yup.string().required('Senha obrigatória'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false, //retorna todos os erros de uma vez só e não apenas o primeiro erro que encontrar
+      });
+      // await signIn({
+      //   email: data.email,
+      //   password: data.password
+      // });
+
+      // history.push('/dashboard');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+        formRef.current?.setErrors(errors);
+        console.log(errors);
+        return;
+      }
+      Alert.alert('Erro na autenticação',
+        'Ocorreu um erro ao fazer login, cheque as credenciais.'
+      )
+    }
   }, []);
 
   return (
@@ -87,7 +125,7 @@ const SignIn: React.FC = () => {
                 Entrar
               </Button>
             </Form>
-            <ForgotPassword onPress={() => {}}>
+            <ForgotPassword onPress={() => { }}>
               <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
             </ForgotPassword>
           </Container>
