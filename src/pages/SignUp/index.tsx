@@ -31,6 +31,7 @@ interface SignUpFormdata {
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const nameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
@@ -54,27 +55,33 @@ const SignUp: React.FC = () => {
           abortEarly: false, //retorna todos os erros de uma vez só e não apenas o primeiro erro que encontrar
         });
 
-        // await api.post('users', data);
-        // history.push('/');
+        await api.post('users', data);
 
-        // Alert.alert(
-        //   'Cadastro realizado!',
-        //   'Você já pode fazer o seu logon no GoBarber.'
-        // );
+        navigation.goBack();
+
+        Alert.alert(
+          'Cadastro realizado!',
+          'Você já pode fazer o seu logon no GoBarber.'
+        );
+
+        console.log('dados ===>', data);
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
-          console.log(errors);
+
           return;
         }
-
         Alert.alert(
           'Erro no cadastro',
           'Ocorreu um erro ao fazer o seu cadastro, tente novamente'
         );
+
+        console.log('erro ===>', err);
+
       }
-    }, []);
+    }, [navigation]);
 
   return (
     <>
@@ -94,6 +101,7 @@ const SignUp: React.FC = () => {
             </View>
             <Form ref={formRef} style={{ width: '100%' }} onSubmit={handleSignUp}>
               <Input
+                ref={nameInputRef}
                 autoCapitalize="words"
                 name="name"
                 icon="user"
