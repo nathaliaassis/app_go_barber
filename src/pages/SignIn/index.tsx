@@ -29,6 +29,7 @@ import {
   CreateAccountText,
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/AuthContext';
 
 interface SignInData {
   email: string;
@@ -38,7 +39,11 @@ interface SignInData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
   const navigation = useNavigation();
+
+  const { signIn, user } = useAuth();
+
 
   const handleSignIn = useCallback(async (data: SignInData) => {
     try {
@@ -55,12 +60,11 @@ const SignIn: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false, //retorna todos os erros de uma vez só e não apenas o primeiro erro que encontrar
       });
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password
-      // });
+      await signIn({
+        email: data.email,
+        password: data.password
+      });
 
-      // history.push('/dashboard');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
@@ -72,7 +76,7 @@ const SignIn: React.FC = () => {
         'Ocorreu um erro ao fazer login, cheque as credenciais.'
       )
     }
-  }, []);
+  }, [signIn]);
 
   return (
     <>
