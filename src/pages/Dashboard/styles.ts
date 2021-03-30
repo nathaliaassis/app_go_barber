@@ -1,0 +1,88 @@
+import styled from 'styled-components/native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { FlatList } from 'react-native';
+
+import { Provider } from './index';
+import { RectButton } from 'react-native-gesture-handler';
+
+export const Container = styled.View`
+  flex: 1 ;
+`;
+export const Header = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 24px;
+  padding-top: ${getStatusBarHeight()}px;
+  background-color: #28262e; 
+`;
+export const HeaderTitle = styled.Text`
+  font-family: "RobotoSlab-Regular";
+  font-size: 20px;
+  line-height: 28px;
+  color: #f4ede8;
+`;
+export const Username = styled.Text`
+  font-family: "RobotoSlab-Medium";
+  color: #FF9000;
+`;
+
+export const ProfileButton = styled.TouchableOpacity`
+
+`;
+export const UserAvatar = styled.Image`
+  height: 56px;
+  width: 56px;
+  border-radius: 28px;
+`;
+export const ProvidersListTitle = styled.Text`
+  font-family: "RobotoSlab-Medium";
+  font-size: 20px;
+  color: #f4ede8;
+  margin-bottom: 24px;
+`;
+
+export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
+  padding: 32px 24px 16px;
+`;
+export const ProviderContainer = styled(RectButton)`
+  background-color: #3e3b47;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ProviderAvatar = styled.Image`
+  height: 72px;
+  width: 72px;
+  border-radius: 36;
+`;
+
+export const ProviderData = styled.View`
+  flex: 1;
+  margin-left: 20px;
+
+`;
+
+export const ProviderName = styled.Text`
+  font-family: "RobotoSlab-Regular";
+  font-size: 18px;
+  color: #f4ede8;
+`;
+
+export const ProviderMeta = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+export const ProviderMetaText = styled.Text`
+  margin-left: 8px;
+  font-family: "RobotoSlab-Regular";
+  color: #999591;
+`;
+
